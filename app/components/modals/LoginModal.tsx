@@ -13,12 +13,15 @@ import toast from "react-hot-toast";
 import Button from "@/app/components/Button";
 import {FcGoogle} from "react-icons/fc";
 import {AiFillGithub} from "react-icons/ai";
+import {handleLogin} from "@/app/lib/actions";
+import {useRouter} from "next/navigation";
 
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal()
     const loginModal = useLoginModal()
     const [isLoading, setIsLoading] = useState(false)
+    const router = useRouter()
 
     const {
         register,
@@ -36,9 +39,12 @@ const RegisterModal = () => {
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true)
 
-        axios.post('/api/register', data)
-            .then(() => {
-                registerModal.onClose()
+        axios.post(`${process.env.NEXT_PUBLIC_API_HOST}/api/auth/login/`, data)
+            .then((response) => {
+                handleLogin(response.data.user.pk, response.data.access, response.data.refresh)
+                toast.success("Login successfully")
+                loginModal.onClose()
+                router.refresh()
             })
             .catch((error) => {
                 toast.error("Something went wrong.")

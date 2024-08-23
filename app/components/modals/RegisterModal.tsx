@@ -11,10 +11,13 @@ import toast from "react-hot-toast";
 import Button from "@/app/components/Button";
 import {FcGoogle} from "react-icons/fc";
 import {AiFillGithub} from "react-icons/ai";
+import {handleLogin} from "@/app/lib/actions";
+import {useRouter} from "next/navigation";
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal()
     const [isLoading, setIsLoading] = useState(false)
+    const router = useRouter()
 
     const {
         register,
@@ -26,16 +29,20 @@ const RegisterModal = () => {
         defaultValues: {
             name: "",
             email: "",
-            password: ""
+            password1: "",
+            password2: ""
         }
     })
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true)
 
-        axios.post('/api/register', data)
-            .then(() => {
+        axios.post(`${process.env.NEXT_PUBLIC_API_HOST}/api/auth/register/`, data)
+            .then((response) => {
+                handleLogin(response.data.access, response.data.refresh, response.data.user.pk)
+                toast.success("Register successfully")
                 registerModal.onClose()
+                router.refresh()
             })
             .catch((error) => {
                 toast.error("Something went wrong.")
@@ -66,9 +73,17 @@ const RegisterModal = () => {
                 required
             />
             <Input
-                id={"password"}
+                id={"password1"}
                 type={"password"}
                 label={"Password"}
+                register={register}
+                errors={errors}
+                required
+            />
+            <Input
+                id={"password2"}
+                type={"password"}
+                label={"Confirm Password"}
                 register={register}
                 errors={errors}
                 required

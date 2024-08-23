@@ -6,6 +6,7 @@ import React from "react";
 import RegisterModal from "@/app/components/modals/RegisterModal";
 import ToasterProvider from "@/app/providers/ToasterProvider";
 import LoginModal from "@/app/components/modals/LoginModal";
+import {getUserId} from "@/app/lib/actions";
 
 const font = Nunito({ subsets: ["latin"] });
 
@@ -14,18 +15,19 @@ export const metadata: Metadata = {
   description: "Airbnb Clone",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userId = await getUserId()
   return (
     <html lang="en">
       <body className={font.className}>
         <ToasterProvider/>
         <RegisterModal/>
         <LoginModal/>
-        <Navbar></Navbar>
+        <Navbar userId={userId}/>
         {children}
       </body>
     </html>
