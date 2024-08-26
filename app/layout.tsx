@@ -21,9 +21,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const userId = await getUserId()
+  const isDev = process.env.NODE_ENV === 'development'
+
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={font.className} suppressHydrationWarning={isDev}>
         <ToasterProvider/>
         <RegisterModal/>
         <LoginModal/>

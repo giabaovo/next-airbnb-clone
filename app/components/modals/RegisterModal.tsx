@@ -1,7 +1,7 @@
 'use client'
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {FieldValues, SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import Modal from "@/app/components/modals/Modal";
@@ -13,9 +13,11 @@ import {FcGoogle} from "react-icons/fc";
 import {AiFillGithub} from "react-icons/ai";
 import {handleLogin} from "@/app/lib/actions";
 import {useRouter} from "next/navigation";
+import useLoginModal from "@/app/hooks/useLoginModal";
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal()
+    const loginModal = useLoginModal()
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
 
@@ -51,6 +53,11 @@ const RegisterModal = () => {
                 setIsLoading(false)
             })
     }
+
+    const toggle = useCallback(() => {
+        registerModal.onClose()
+        loginModal.onOpen()
+    }, [registerModal, loginModal])
 
     const bodyContent = (
         <div className={"flex flex-col gap-4"}>
@@ -111,7 +118,7 @@ const RegisterModal = () => {
                     <div>
                         Already have an account
                     </div>
-                    <div className={"text-neutral-800 cursor-pointer hover:underline"} onClick={registerModal.onClose}>
+                    <div className={"text-neutral-800 cursor-pointer hover:underline"} onClick={toggle}>
                         Login
                     </div>
                 </div>
