@@ -7,6 +7,7 @@ import RegisterModal from "@/app/components/modals/RegisterModal";
 import ToasterProvider from "@/app/providers/ToasterProvider";
 import LoginModal from "@/app/components/modals/LoginModal";
 import {getUserId} from "@/app/lib/actions";
+import RentModal from "@/app/components/modals/RentModal";
 
 const font = Nunito({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={font.className} suppressHydrationWarning={isDev}>
         <ToasterProvider/>
+        <RentModal />
         <RegisterModal/>
         <LoginModal/>
         <Navbar userId={userId}/>

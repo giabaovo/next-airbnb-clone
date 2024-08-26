@@ -9,6 +9,7 @@ import useLoginModal from "@/app/hooks/useLoginModal";
 import {useRouter} from "next/navigation";
 import {resetAuthCookies} from "@/app/lib/actions";
 import toast from "react-hot-toast";
+import useRentModal from "@/app/hooks/useRentModal";
 
 interface UserMenuProps {
     userId?: string | null
@@ -20,6 +21,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
     const registerModal = useRegisterModal()
     const loginModal = useLoginModal()
+    const rentModal = useRentModal()
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -35,12 +37,19 @@ const UserMenu: React.FC<UserMenuProps> = ({
         router.refresh()
     }
 
+    const onRent = useCallback(() => {
+        if (!userId) {
+            return loginModal.onOpen()
+        }
+
+        rentModal.onOpen()
+    }, [userId, loginModal, rentModal])
+
     return (
         <div className={"relative"}>
             <div className={"flex flex-row items-center gap-3"}>
                 <div
-                    onClick={() => {
-                    }}
+                    onClick={onRent}
                     className={"hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"}>
                     Airbnb Your Home
                 </div>
@@ -78,7 +87,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                                 />
                                 <MenuItem
                                     label={"Airbnb my home"}
-                                    onClick={() => {}}
+                                    onClick={rentModal.onOpen}
                                 />
                                 <hr/>
                                 <MenuItem
