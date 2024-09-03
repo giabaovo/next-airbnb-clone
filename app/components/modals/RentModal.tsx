@@ -15,6 +15,7 @@ import Input from "@/app/components/inputs/Input";
 import axios from "axios";
 import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
+import {getAccessToken} from "@/app/lib/actions";
 
 enum STEPS {
     CATEGORY = 0,
@@ -47,11 +48,11 @@ const RentModal = () => {
         defaultValues: {
             category: "",
             location: null,
-            guestCount: 1,
-            roomCount: 1,
-            bathRoomCount: 1,
-            imageSrc: '',
-            price: 1,
+            guests: 1,
+            bedrooms: 1,
+            bathrooms: 1,
+            image: '',
+            price_per_night: 1,
             title: '',
             description: ''
         }
@@ -59,10 +60,10 @@ const RentModal = () => {
 
     const category = watch('category')
     const location = watch('location')
-    const guestCount = watch('guestCount')
-    const roomCount = watch('roomCount')
-    const bathRoomCount = watch('bathRoomCount')
-    const imageSrc = watch('imageSrc')
+    const guests = watch('guests')
+    const bedrooms = watch('bedrooms')
+    const bathrooms = watch('bathrooms')
+    const image = watch('image')
 
 
     const Map = useMemo(() => dynamic(() => import("@/app/components/Map"), {
@@ -85,14 +86,20 @@ const RentModal = () => {
         setStep((value) => value + 1)
     }
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         if (step !== STEPS.PRICE) {
             return onNext()
         }
 
         setIsLoading(true)
 
-        axios.post('/api/listing', data)
+        const token = await getAccessToken()
+
+        axios.post(`${process.env.NEXT_PUBLIC_API_HOST}/api/property/`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then(() => {
                 toast.success("Listing created!")
                 router.refresh()
@@ -171,22 +178,22 @@ const RentModal = () => {
                 <Counter
                     title={"Guests"}
                     subtitle={"How many guests do you allow?"}
-                    value={guestCount}
-                    onChange={(value) => setCustomValue('guestCount', value)}
+                    value={guests}
+                    onChange={(value) => setCustomValue('guests', value)}
                 />
                 <hr/>
                 <Counter
                     title={"Rooms"}
-                    subtitle={"How many rooms do you have?"}
-                    value={roomCount}
-                    onChange={(value) => setCustomValue('roomCount', value)}
+                    subtitle={"How many bed rooms do you have?"}
+                    value={bedrooms}
+                    onChange={(value) => setCustomValue('bedrooms', value)}
                 />
                 <hr/>
                 <Counter
                     title={"Bathrooms"}
                     subtitle={"How many bathrooms do you have?"}
-                    value={bathRoomCount}
-                    onChange={(value) => setCustomValue('bathRoomCount', value)}
+                    value={bathrooms}
+                    onChange={(value) => setCustomValue('bathrooms', value)}
                 />
             </div>
         )
@@ -200,8 +207,8 @@ const RentModal = () => {
                     subtitle={"Show guests what your place looks like!"}
                 />
                 <ImageUpload
-                    value={imageSrc}
-                    onChange={(value) => setCustomValue('imageSrc', value)}
+                    value={image}
+                    onChange={(value) => setCustomValue('image', value)}
                 />
             </div>
         )
@@ -243,7 +250,7 @@ const RentModal = () => {
                     subtitle={"How much do you charge per night?"}
                 />
                 <Input
-                    id={"price"}
+                    id={"price_per_night"}
                     label={"Price"}
                     register={register}
                     errors={errors}
@@ -259,7 +266,11 @@ const RentModal = () => {
     return (
         <Modal
             isOpen={rentModal.isOpen}
-            onClose={rentModal.onClose}
+            onClose={() => {
+                reset()
+                setStep(STEPS.CATEGORY)
+                rentModal.onClose()
+            }}
             onSubmit={handleSubmit(onSubmit)}
             actionLabel={actionLabel}
             secondaryActionLabel={secondActionLabel}
