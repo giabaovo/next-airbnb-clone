@@ -6,7 +6,7 @@ import React from "react";
 import RegisterModal from "@/app/components/modals/RegisterModal";
 import ToasterProvider from "@/app/providers/ToasterProvider";
 import LoginModal from "@/app/components/modals/LoginModal";
-import {getUserId} from "@/app/lib/actions";
+import {getCurrentUser} from "@/app/lib/actions";
 import RentModal from "@/app/components/modals/RentModal";
 
 const font = Nunito({ subsets: ["latin"] });
@@ -21,7 +21,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userId = await getUserId()
+  const currentUser = await getCurrentUser()
   const isDev = process.env.NODE_ENV === 'development'
 
   return (
@@ -31,7 +31,7 @@ export default async function RootLayout({
         <RentModal />
         <RegisterModal/>
         <LoginModal/>
-        <Navbar userId={userId}/>
+        <Navbar currentUser={currentUser}/>
         <div className={"pb-20 pt-28"}>
           {children}
         </div>

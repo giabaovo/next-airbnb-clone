@@ -41,7 +41,7 @@ const RegisterModal = () => {
 
         axios.post(`${process.env.NEXT_PUBLIC_API_HOST}/api/auth/login/`, data)
             .then((response) => {
-                handleLogin(response.data.user.pk, response.data.access, response.data.refresh)
+                handleLogin(response.data.access, response.data.refresh)
                 toast.success("Login successfully")
                 loginModal.onClose()
                 router.refresh()

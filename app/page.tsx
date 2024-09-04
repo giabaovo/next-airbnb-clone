@@ -1,12 +1,12 @@
 import Container from "@/app/components/Container";
 import EmptyState from "@/app/components/EmptyState";
-import {getListings, getUserId} from "@/app/lib/actions";
+import {getCurrentUser, getListings} from "@/app/lib/actions";
 import ListingCard from "@/app/components/listings/ListingCard";
 
 export default async function Home() {
 
     const listings = await getListings()
-    const userId = await getUserId()
+    const currentUser = await getCurrentUser()
 
     if (listings.length === 0) {
         return (
@@ -23,7 +23,7 @@ export default async function Home() {
                         <ListingCard
                             key={listing.id}
                             data={listing}
-                            userId={userId}
+                            currentUser={currentUser}
                         />
                     )
                 })}

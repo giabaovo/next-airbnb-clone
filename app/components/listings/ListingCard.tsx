@@ -15,7 +15,7 @@ interface ListingCardProps {
     disabled?: boolean
     actionLabel?: string
     actionId?: string
-    userId?: any
+    currentUser?: User | null
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -25,7 +25,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
     disabled,
     actionLabel,
     actionId = "",
-    userId
+    currentUser
 }) => {
 
     const router = useRouter()
@@ -80,7 +80,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
                     <div className={"absolute top-3 right-3"}>
                         <HeartButton
                             listingId={data.id}
-                            userId={userId}
+                            currentUser={currentUser}
                         />
                     </div>
                 </div>

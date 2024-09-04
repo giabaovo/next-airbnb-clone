@@ -12,11 +12,11 @@ import toast from "react-hot-toast";
 import useRentModal from "@/app/hooks/useRentModal";
 
 interface UserMenuProps {
-    userId?: string | null
+    currentUser?: User | null
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({
-    userId
+    currentUser
 }) => {
 
     const registerModal = useRegisterModal()
@@ -38,12 +38,12 @@ const UserMenu: React.FC<UserMenuProps> = ({
     }
 
     const onRent = useCallback(() => {
-        if (!userId) {
+        if (!currentUser) {
             return loginModal.onOpen()
         }
 
         rentModal.onOpen()
-    }, [userId, loginModal, rentModal])
+    }, [currentUser, loginModal, rentModal])
 
     return (
         <div className={"relative"}>
@@ -70,7 +70,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 <div
                     className={"absolute rounded-md shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm"}>
                     <div className={"flex flex-col cursor-pointer"}>
-                        {userId ? (
+                        {currentUser ? (
                             <>
                                 <MenuItem
                                     label={"My trips"}
