@@ -56,3 +56,12 @@ export const getListings = async () => {
         return [];
     }
 };
+
+export const getListingById = async (listingId: string) => {
+    try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_HOST}/api/property/${listingId}/`);
+        return response.data;
+    } catch (error) {
+        toast.error("Something went wrong");
+    }
+};
