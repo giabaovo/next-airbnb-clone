@@ -44,7 +44,7 @@ const RegisterModal = () => {
                 handleLogin(response.data.access, response.data.refresh)
                 toast.success("Register successfully")
                 registerModal.onClose()
-                router.refresh()
+                loginModal.onOpen()
             })
             .catch((error) => {
                 toast.error("Something went wrong.")
