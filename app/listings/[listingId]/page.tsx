@@ -1,4 +1,4 @@
-import {getCurrentUser, getListingById} from "@/app/lib/actions";
+import {getCurrentUser, getListingById, getReservations} from "@/app/lib/actions";
 import EmptyState from "@/app/components/EmptyState";
 import ListingClient from "@/app/listings/[listingId]/ListingClient";
 
@@ -13,6 +13,7 @@ const ListingPage = async ({params}: ListingPageProps) => {
     const {listingId} = params
 
     const listing = await getListingById(listingId)
+    const reservations = await getReservations(listingId)
     const currentUser = await getCurrentUser()
 
     if (!listing) {
@@ -25,6 +26,7 @@ const ListingPage = async ({params}: ListingPageProps) => {
         <ListingClient
             listing={listing}
             currentUser={currentUser}
+            reservations={reservations}
         />
     )
 }

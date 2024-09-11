@@ -21,7 +21,7 @@ const initialDateRange = {
 }
 
 interface ListingClientProps {
-    reservations?: []
+    reservations?: Reservation[]
     listing: Listing & {
         user: User
     }
@@ -65,7 +65,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         setIsLoading(true)
         const token = await getAccessToken()
 
-        axios.post('/api/reservation/', {
+        axios.post(`${process.env.NEXT_PUBLIC_API_HOST}/api/property/${listing.id}/reservation/`, {
             totalPrice,
             startDate: dateRange.startDate,
             endDate: dateRange.endDate,
