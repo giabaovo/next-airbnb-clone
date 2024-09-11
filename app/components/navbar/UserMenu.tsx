@@ -85,7 +85,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
                                 />
                                 <MenuItem
                                     label={"My reservations"}
-                                    onClick={() => {}}
+                                    onClick={() => {
+                                        setIsOpen(false)
+                                        router.push('/reservations')
+                                    }}
                                 />
                                 <MenuItem
                                     label={"My properties"}

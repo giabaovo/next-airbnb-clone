@@ -1,8 +1,8 @@
-import {getCurrentUser, getReservationsByUser} from "@/app/lib/actions";
+import {getCurrentUser, getReservationsByAuthor} from "@/app/lib/actions";
 import EmptyState from "@/app/components/EmptyState";
-import TripsClient from "@/app/trips/TripsClient";
+import ReservationsClient from "@/app/reservations/ReservationsClient";
 
-const TripsPage = async () => {
+const ReservationsPage = async () => {
 
     const currentUser = await getCurrentUser()
 
@@ -15,23 +15,23 @@ const TripsPage = async () => {
         )
     }
 
-    const reservations = await getReservationsByUser()
+    const reservations = await getReservationsByAuthor()
 
     if (reservations.length === 0) {
         return (
             <EmptyState
-                title={"No trips found"}
-                subtitle={"Looks like you haven't reserved any trips"}
+                title={"No reservations found"}
+                subtitle={"Looks like you have no reservations on your properties"}
             />
         )
     }
 
     return (
-        <TripsClient
+        <ReservationsClient
             reservations={reservations}
             currentUser={currentUser}
         />
     )
 }
 
-export default TripsPage
+export default ReservationsPage

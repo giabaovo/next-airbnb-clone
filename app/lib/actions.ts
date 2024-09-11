@@ -99,3 +99,20 @@ export const getReservationsByUser = async () => {
         toast.error("Something went wrong");
     }
 };
+
+export const getReservationsByAuthor = async () => {
+    try {
+        const token = await getAccessToken()
+        if (token) {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_HOST}/api/property/author-reservation/`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data
+        }
+        return null
+    } catch (error) {
+        toast.error("Something went wrong");
+    }
+};
