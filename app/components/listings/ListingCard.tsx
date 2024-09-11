@@ -10,7 +10,7 @@ import Button from "@/app/components/Button";
 
 interface ListingCardProps {
     data: any
-    reservation?: any
+    reservation?: Reservation
     onAction?: (id: string) => void
     disabled?: boolean
     actionLabel?: string
@@ -45,8 +45,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
     const price = useMemo(() => {
         if (reservation) {
-            return 123
-            // return reservation.price
+            return reservation.totalPrice
         }
 
         return data.price_per_night
@@ -57,9 +56,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
             return null
         }
 
-        /// Need to modify
-        const start = new Date(reservation.start)
-        const end = new Date(reservation.end)
+        const start = new Date(reservation.startDate)
+        const end = new Date(reservation.endDate)
 
         return `${format(start, 'PP')} - ${format(end, 'PP')}`
     }, [reservation])
