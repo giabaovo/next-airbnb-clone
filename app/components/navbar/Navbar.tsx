@@ -5,11 +5,11 @@ import UserMenu from "@/app/components/navbar/UserMenu";
 import Categories from "@/app/components/navbar/Categories";
 
 interface NavbarProps {
-    userId?: string | null
+    currentUser?: User | null
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-    userId
+    currentUser
 }) => {
     return (
         <div className={"fixed w-full bg-white z-10 shadow-sm"}>
@@ -18,7 +18,7 @@ const Navbar: React.FC<NavbarProps> = ({
                     <div className={"flex flex-row items-center justify-between gap-3 md:gap-0"}>
                         <Logo/>
                         <Search/>
-                        <UserMenu userId={userId}/>
+                        <UserMenu currentUser={currentUser}/>
                     </div>
                 </Container>
             </div>
