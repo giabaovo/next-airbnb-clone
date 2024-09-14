@@ -8,7 +8,6 @@ const FavoritesPage = async () => {
 
     const favorite_listings = await getWishList()
     const { listings } = favorite_listings
-    console.log(listings)
 
     if (listings.length === 0) {
         return (
