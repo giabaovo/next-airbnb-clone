@@ -3,9 +3,61 @@ import EmptyState from "@/app/components/EmptyState";
 import {getCurrentUser, getListings} from "@/app/lib/actions";
 import ListingCard from "@/app/components/listings/ListingCard";
 
-export default async function Home() {
+export interface ListingParams {
+    searchParams: {
+        bathroomCount?: string
+        guestCount?: string
+        roomCount?: string
+        category?: string
+        locationValue?: string
+        startDate?: string
+        endDate?: string
+    }
+}
 
-    const listings = await getListings()
+export default async function Home(params: ListingParams) {
+
+    const {
+        bathroomCount,
+        guestCount,
+        roomCount,
+        category,
+        locationValue,
+        startDate,
+        endDate
+    } = params.searchParams
+
+    let query = ''
+
+    if (bathroomCount) {
+        query += `bathroomCount=${bathroomCount}&`
+    }
+
+    if (guestCount) {
+        query += `guestCount=${guestCount}&`
+    }
+
+    if (roomCount) {
+        query += `roomCount=${roomCount}&`
+    }
+
+    if (category) {
+        query += `category=${category}&`
+    }
+
+    if (locationValue) {
+        query += `locationValue=${locationValue}&`
+    }
+
+    if (startDate) {
+        query += `startDate=${startDate}&`
+    }
+
+    if (endDate) {
+        query += `endDate=${endDate}&`
+    }
+
+    const listings = await getListings(query)
     const currentUser = await getCurrentUser()
 
     if (listings.length === 0) {
