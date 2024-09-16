@@ -41,7 +41,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
     const disableDates = useMemo(() => {
         let dates: Date[] = []
 
-        reservations.forEach((reservation) => {
+        reservations?.forEach((reservation) => {
             const range = eachDayOfInterval({
                 start: new Date(reservation.startDate),
                 end: new Date(reservation.endDate)

@@ -47,9 +47,13 @@ export const getAccessToken = async () => {
     return accessToken ? accessToken : null
 }
 
-export const getListings = async () => {
+export const getListings = async (query: string) => {
     try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_HOST}/api/property/`);
+        let url = `${process.env.NEXT_PUBLIC_API_HOST}/api/property/`
+        if (query) {
+            url += `?${query}`
+        }
+        const response = await axios.get(url);
         return response.data;
     } catch (error) {
         toast.error("Something went wrong");
